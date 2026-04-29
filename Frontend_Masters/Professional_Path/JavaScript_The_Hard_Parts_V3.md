@@ -21,3 +21,35 @@ Los métodos que aceptan o devuelven funciones se llaman funciones de orden supe
 En Javascript, las funciones son **Objetos de primera clase (*First-Class Objects*)**. Esto quiere decir que son tratados como cualquier otro objeto, que son en esencia, datos. Pero a estos datos se les puede llamar, invocar o ejecutar. Para que se le considere ***First-Class Objects***, la función tiene que poder ser asignada a una variable, poder pasarse como argumento o ser devueta por otra función.
 A la función que se le pasa a la función de orden superior, se le suele llamar **Callback Function** (conocido a veces como ***handler, transformation function, argument function o lambda function***).
 Cuando una función es devuelta por otra función, se le llama ***Closure*** y esta recuerda el contexto en la que fue creada.
+
+### Funciones flecha
+Podemos crear una función sin nombre, llamado **función lambda o anónima**. Esto nos sirve para ahorrar tiempo y tener un código más legible y simple (**conocido como azúcar sintáctico**) Su sintaxis es la siguiente:
+```javascript
+arg1 => arg1*2
+(arg1, arg2) => arg1 * arg2
+(arg1, arg2, arg3) => {
+    arg1 += arg2
+    return arg1 * arg3
+}
+```
+- Cuando solo hay un parámetro de entrada, no hace falta poner los argumentos entre paréntesis.
+- Si hay más de un parámetro de entrada, hay que poner los argumentos entre paréntesis.
+- Si solo hay una línea de instrucción, se puede omitir los {} y el return.
+- Si hay más de una línea de instrucciones, se tiene que poner {} y return.
+
+Hay funciones prehechas para los **arrays**, estos son los *reduce, map, filter*.
+
+- **map**: Aplica una función a cada elemento de un array y devuelve un nuevo array sin modificar el original.
+- **filter**: Aplica una función que retorna un booleano, si es true, se queda en el nuevo array, si es falso, no se queda. Devuelve un nuevo array.
+- **reduce**: Aplica una función con dos argumentos para una vaya guardando la operación que se hará con el segundo argumento. Devuelvo un simple valor.
+
+```javascript
+[array].map(callback)
+map(array, callback)
+
+[array].filter(callback)
+filter(array, callback)
+
+[array].reduce(callback(a, b[, c]))
+reduce(array, callback(a, b[, c]))
+````
