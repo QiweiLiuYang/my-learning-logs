@@ -49,7 +49,12 @@ map(array, callback)
 
 [array].filter(callback)
 filter(array, callback)
-
+`
 [array].reduce(callback(a, b[, c]))
 reduce(array, callback(a, b[, c]))
-````
+```
+
+### Métodos de arryas que no modifican el original
+En Javascript existen muchos métodos que modifican el **array** original, cosa que no debería de suceder para preveer los efectos secundarios. Por ejemplo modificar un array que se esté usando en otra parte del código y genera errores difíciles de localizar.
+Existen métodos clásicos que tienen su variante que no muta el array original:
+```javascript
