@@ -58,6 +58,24 @@ reduce(array, callback(a, b[, c]))
 En Javascript existen muchos métodos que modifican el **array** original, cosa que no debería de suceder para preveer los efectos secundarios. Por ejemplo modificar un array que se esté usando en otra parte del código y genera errores difíciles de localizar.
 Existen métodos clásicos que tienen su variante que no muta el array original:
 ```javascript
+arr.reverse()
+arr.toReversed()
+
+arr.splice()
+arr.toSpliced()
+
+arr.sort()
+arr.toSorted()
+```
+
+Hay otros métodos de arrays:
+```javascript
+arr.flat()
+
+arr.findLastIndex()
+
+arr.groupBy()
+```
 
 ### Llamando funciones dentro de funciones
 ```javascript
