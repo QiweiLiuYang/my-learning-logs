@@ -90,3 +90,6 @@ const generatedFunc = createFunction();
 let result = generatedFunc(3) // 6
 ```
 El código de arriba, la función es una fábrica de otra función que devuelve la **definición** de la función (pero no la ejecuta). Esa función devuelta recuerda todo lo que estaba en su escope. Se llamas a *generatedFunc()*, no se vuelve a ejecutar createFunction() porque esta guarda la referencia a la función interna y su entorno. En definitiva, la función *createFunction* es una fábrica de funciones que recuerda su *scope* y solo se ejecuta una vez
+
+### Closure scope
+La función devuelta tiene un link oculto **[[scope]]** a las propiedades que tiene acceso. La mochila con todos los datos se llama **Closure over variable environment (COVE)** y esta es persistente. Se le llama con mayor precisión: **Persistent Lexical Scope Reference Data (PLSRD)**
