@@ -93,3 +93,40 @@ El código de arriba, la función es una fábrica de otra función que devuelve 
 
 ### Closure scope
 La función devuelta tiene un link oculto **[[scope]]** a las propiedades que tiene acceso. La mochila con todos los datos se llama **Closure over variable environment (COVE)** y esta es persistente. Se le llama con mayor precisión: **Persistent Lexical Scope Reference Data (PLSRD)**
+
+### Multiple Closures
+Si guardamos el resultado de una función que devuelve otra función un par de veces, como ejecuta esa función en un nuevo contexto de ejecución, se crea otra función con su scope y es devuelta y almacenada en otra variable. Esta segunda ejecución es totalmente independiente de la primera.
+\*Javascript busca primero en la memoria local y si no encuentra lo que busca va a buscar al *Scope* que tiene linkeado con **[[Scope]]**. Si no lo encuentra aquí, va subiendo en la cadena de **Scope** hasta llegar al scope global
+
+
+## Type coercion & metaprogramming
+### Math operators & User-Submitted Data
+Javascript viene con unos operadores predeterminados (* ** / + - % etc). Estos operadores cojen los operandos de la derecha e izquierda.
+
+Cuando hacemos una operación de Integer (7) * String ("7"). Ese "*" detecta que necesita números para operar y ejecuta un Type Coercion a cada lado del operador y aplica ToNumber a cada uno para que se convierta en un número. En este caso, 7 * "3" es posible gracias al **Type coercion**.
+
+### Math operator Type coercion
+Tenemos operadores relacionales (< > <= =>).
+
+Los operadores relacionales también aplican **Type Coercion**.
+
+Tenemos una excepción y es el operador **+** que si encuentra un operando **String** y otro numérico, aplica el Type Coercion de **ToString** y convierte el número en un **string**.
+
+Podemos forzar el **Type coercion** con la función **Number()** o con los operadores unarios, que son los que no necesitan otro operando, simplemente se pone delante de un **string**:
+- **+**: Transforma un string en un número.
+- **-**: Transforma un string en un número y lo vuelve negativo.
+- **!**: Convierte un valor en su opuesto booleano. Fuerza la coerción **ToBoolean**
+```javascript
+7 + "3" = "73"
+7 + +"3" = 10
+7 + Number("3") = 10
+```
+
+Para forzar **ToString**, podemos usar la función **String()** o usar `${}`:
+```javascript
+7 + "" = "7"
+String(7) = "7"
+`${7}` = "7"
+```
+
+### ToBoolean Coercion
