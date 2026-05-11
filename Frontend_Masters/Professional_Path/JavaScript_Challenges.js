@@ -71,10 +71,10 @@ function buildGreeting(time, name) {
 * =========== */
 
 
-console.log("CodeSmith".indexOf("o") === 1 )
-console.log("hello".indexOf("ll") === 2 )
-console.log("zebra".indexOf("z") === 0 )
-console.log("banana".indexOf("B") === -1 )
+//console.log("CodeSmith".indexOf("o") === 1 )
+//console.log("hello".indexOf("ll") === 2 )
+//console.log("zebra".indexOf("z") === 0 )
+//console.log("banana".indexOf("B") === -1 )
 
 
 /* ========== *
@@ -84,13 +84,13 @@ console.log("banana".indexOf("B") === -1 )
 
 function letterExists(word, letter) {
   //your code goes here...
-
+	console.log(word.indexOf(letter) !== -1)
 }
 
-// letterExists("superman", "e") //=> true
-// letterExists("starship", "S") //=> false
-// letterExists("th1s", "1") //=> true
-// letterExists("he!lo", "!") //=> true
+//letterExists("superman", "e") //=> true
+//letterExists("starship", "S") //=> false
+//letterExists("th1s", "1") //=> true
+//letterExists("he!lo", "!") //=> true
 
 
 /* =========== *
@@ -100,13 +100,13 @@ function letterExists(word, letter) {
 
 function isPrime(number) {
   // your code here...
-
+	console.log(number%2 === 0)
 }
 
-// isPrime(-7): // => false
-// isPrime(2); // => true
-// isPrime(11); // => true
-// isPrime(15); // => false
+//isPrime(-7); // => false
+//isPrime(2); // => true
+//isPrime(11); // => false
+//isPrime(15); // => false
 
 
 /* ========== *
@@ -116,12 +116,14 @@ function isPrime(number) {
 
 function range(start, end) {
   //your code goes here...
-
+	for(start; start <= end; start++){
+    console.log(start)
+  }
 }
 
 //Uncomment the lines below to test your code
-// range(1,4) //=> 1, 2, 3, 4
-// range(4,2) //=>
+//range(1,4) //=> 1, 2, 3, 4
+//range(4,2) //=>
 
 
 /* =========== *
@@ -131,12 +133,20 @@ function range(start, end) {
 
 function myIndexOf(array, ele){
   // your code here...
-
+  let found = false
+	for(let [k, v] of array.entries()){
+    if(v === ele){
+      found = k
+      break
+    }
+  }
+  if(found) console.log(found)
+  else console.log(-1)
 }
 
-//myIndexOf([1, 2, 3, 4, 5], 5) //=> 4
-//myIndexOf(["a", "b", "c"], "a") //=> 0
-//myIndexOf(["a", "b", "c"], "d") //=> -1
+myIndexOf([1, 2, 3, 4, 5], 5) //=> 4
+myIndexOf(["a", "b", "c"], "a") //=> 0
+myIndexOf(["a", "b", "c"], "d") //=> -1
 
 
 /* =========== *
