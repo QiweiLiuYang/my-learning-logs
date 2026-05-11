@@ -101,7 +101,7 @@ Si guardamos el resultado de una función que devuelve otra función un par de v
 
 ## Type coercion & metaprogramming
 ### Math operators & User-Submitted Data
-Javascript viene con unos operadores predeterminados (* ** / + - % etc). Estos operadores cojen los operandos de la derecha e izquierda.
+Javascript viene con unos operadores aritméticos (* ** / % + ++ - -- ==). Estos operadores cojen los operandos de la derecha e izquierda.
 
 Cuando hacemos una operación de Integer (7) * String ("7"). Ese "*" detecta que necesita números para operar y ejecuta un Type Coercion a cada lado del operador y aplica ToNumber a cada uno para que se convierta en un número. En este caso, 7 * "3" es posible gracias al **Type coercion**.
 
@@ -130,3 +130,13 @@ String(7) = "7"
 ```
 
 ### ToBoolean Coercion
+Cuando tenemos que evaluar una **condición** *(if, while, for, !, &&, ||)* que evalúa una cadena vacío ("") o un 0, aplica un ToBoolean coercion y lo convierte en un booleano **False**. Solo puede ser **True** o **False** dependiendo de si es un valor **falsy** o **truthy**:
+
+>Falsy: False, 0, -0, 0n, "", null, undefined, NaN
+>
+>Todo lo demás es truthy, por ejemplo:<br>
+>Truthy: "0", "false", [], {}, function(){}
+>
+>Truco pro: usar doble negación (!!) para convertir algo en booleano
+
+Esto puede provocar comportamientos no deseados, por eso existe el operador **===*** que no aplica ningún tipo de **Coercion**.
