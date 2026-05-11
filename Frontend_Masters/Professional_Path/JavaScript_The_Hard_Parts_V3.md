@@ -1,142 +1,370 @@
-# JavaScript
-## Principios de JavaScript
-### Hilo de ejecución y contexto de ejecución
-En Javascript, cada línea es "ejecutado" una por una en un hilo de ejecución y se guarda en una memoria global. Cuando declaramos una variable o una constante, se guarda en la memoria global su identificador (nombre de la variable) y su valor.
-Cuando se ejecuta con una función, guarda en la memoria el nombre de la función y en su contenido el cuerpo de la función.
-Cuando se ejecuta una función, se crea un contexto de ejecución y una memoria local. En ese contexto de ejecución, hay un hilo de ejecución que ejecuta línea a línea el contenido de esa función guardando en su memoria local lo que encuentre y devuelve (si es el caso) un valor que puede estar guardado en la memoria global o no. Una vez terminado de ejecutarse, ese contexto de ejecucíón se olvida y sigue con el hilo principal
+/* ========== *
+* Challenge 1 *
+* =========== */
 
-### Call Stack
-Es una pila (LIFO *Last In First Out*) para que JavaScript sepa que función se está ejecutandose y a donde volver cuando una vez termina (con return). Por ejemplo, cuando se ejecuta una función, este se pone en la pila y depués se saca y vuelve a la ejecución del contexto global.
-Como JavaScript es monohilo, solo hay un Call Stack por lo que solo puede ejecutar una cosa a la vez.
+//Uncomment the lines below to test your code
+//console.log(typeof 7.0 === "number")
+//console.log(typeof 22 === "number")
+//console.log(typeof true === "boolean")
+
+//var myVar;
+//console.log(typeof myVar === "undefined")
+
+//myVar = "Qiwei Liuyang"
+//console.log(typeof myVar === "string")
+
+//Comment them back out with two forward slashes at the beginning once you have finished
 
 
-## Callbacks & Funciones de orden superior
-### Generalizar funciones
-Hay una regla que se llama **DRY** (Don't Repeat Yourself) que es básicamente no hacer tareas repetitivas. Podemos generalizar creando la función para que cuando se le llame, use un los datos dados en vez de *hard codear* los datos. El argumento es el dato pasado y el parámetro es la etiqueta que se le da a ese argumento dentro de la función.
+/* ========== *
+* Challenge 2 *
+* =========== */
 
-### Pasar una función como argumento
-Los métodos que aceptan o devuelven funciones se llaman funciones de orden superior. Esto es gracias a la programación funcional
 
-### Código declarativo y legible
-En Javascript, las funciones son **Objetos de primera clase (*First-Class Objects*)**. Esto quiere decir que son tratados como cualquier otro objeto, que son en esencia, datos. Pero a estos datos se les puede llamar, invocar o ejecutar. Para que se le considere ***First-Class Objects***, la función tiene que poder ser asignada a una variable, poder pasarse como argumento o ser devueta por otra función.
-A la función que se le pasa a la función de orden superior, se le suele llamar **Callback Function** (conocido a veces como ***handler, transformation function, argument function o lambda function***).
-Cuando una función es devuelta por otra función, se le llama ***Closure*** y esta recuerda el contexto en la que fue creada.
-
-### Funciones flecha
-Podemos crear una función sin nombre, llamado **función lambda o anónima**. Esto nos sirve para ahorrar tiempo y tener un código más legible y simple (**conocido como azúcar sintáctico**) Su sintaxis es la siguiente:
-```javascript
-arg1 => arg1*2
-(arg1, arg2) => arg1 * arg2
-(arg1, arg2, arg3) => {
-    arg1 += arg2
-    return arg1 * arg3
+function buildSentence(word1, word2, word3) {
+  //your code goes here...
+	console.log(`${word1.charAt(0).toUpperCase() + word1.slice(1)} ${word2} ${word3}.`)
 }
-```
-- Cuando solo hay un parámetro de entrada, no hace falta poner los argumentos entre paréntesis.
-- Si hay más de un parámetro de entrada, hay que poner los argumentos entre paréntesis.
-- Si solo hay una línea de instrucción, se puede omitir los {} y el return.
-- Si hay más de una línea de instrucciones, se tiene que poner {} y return.
 
-Hay funciones prehechas para los **arrays**, estos son los *reduce, map, filter*.
+//buildSentence("coding", "is", "awesome") //=> "Coding is awesome."
+//buildSentence("we're", "number", "1") //=> "We're number 1."
 
-- **map**: Aplica una función a cada elemento de un array y devuelve un nuevo array sin modificar el original.
-- **filter**: Aplica una función que retorna un booleano, si es true, se queda en el nuevo array, si es falso, no se queda. Devuelve un nuevo array.
-- **reduce**: Aplica una función con dos argumentos para una vaya guardando la operación que se hará con el segundo argumento. Devuelvo un simple valor.
 
-```javascript
-[array].map(callback)
-map(array, callback)
+/* ========== *
+* Challenge 3 *
+* =========== */
 
-[array].filter(callback)
-filter(array, callback)
-`
-[array].reduce(callback(a, b[, c]))
-reduce(array, callback(a, b[, c]))
-```
 
-### Métodos de arryas que no modifican el original
-En Javascript existen muchos métodos que modifican el **array** original, cosa que no debería de suceder para preveer los efectos secundarios. Por ejemplo modificar un array que se esté usando en otra parte del código y genera errores difíciles de localizar.
-Existen métodos clásicos que tienen su variante que no muta el array original:
-```javascript
-arr.reverse()
-arr.toReversed()
+function lastLetter(word) {
+  //your code goes here...
+  console.log(word[word.length -1])
+}
 
-arr.splice()
-arr.toSpliced()
+//Uncomment the lines below to test your code
+//lastLetter("hello") //=> "o"
+//lastLetter("goodbye!") //=> "!"
+//lastLetter("ZeltoiD") //=> "D"
 
-arr.sort()
-arr.toSorted()
-```
 
-Hay otros métodos de arrays:
-```javascript
-arr.flat()
+/* ========== *
+* Challenge 4 *
+* =========== */
 
-arr.findLastIndex()
 
-arr.groupBy()
-```
+function buildGreeting(time, name) {
+  //your code goes here...
+  if(time < 0 || time > 24) console.log(`That's not a real time, ${name}. Maybe you need some sleep!`)
+  else if(time < 12) console.log(`Good Morning, ${name}`)
+  else if(time < 17) console.log(`Good Afternoon, ${name}`)
+  else console.log(`Good Evening, ${name}`)
+}
 
-### Llamando funciones dentro de funciones
-```javascript
-function createFunction() {`
-  const two = 2
-  function multiplyBy2(num) {
-    return num * two;
+
+//buildGreeting(8, "Maggie") //=> "Good Morning, Maggie!"
+//buildGreeting(12, "John") //=> "Good Afternoon, John!"
+//buildGreeting(22, "Stacey") //=> "Good Evening, Stacey!"
+//buildGreeting(31, "Derrick") //=> "That's not a real time, Derrick. Maybe you need some sleep!"
+
+
+/* ========== *
+* Challenge 5 *
+* =========== */
+
+
+//console.log("CodeSmith".indexOf("o") === 1 )
+//console.log("hello".indexOf("ll") === 2 )
+//console.log("zebra".indexOf("z") === 0 )
+//console.log("banana".indexOf("B") === -1 )
+
+
+/* ========== *
+* Challenge 6 *
+* =========== */
+
+
+function letterExists(word, letter) {
+  //your code goes here...
+	console.log(word.indexOf(letter) !== -1)
+}
+
+//letterExists("superman", "e") //=> true
+//letterExists("starship", "S") //=> false
+//letterExists("th1s", "1") //=> true
+//letterExists("he!lo", "!") //=> true
+
+
+/* =========== *
+* Challenge 7 *
+* ============ */
+
+
+function isPrime(number) {
+  // your code here...
+	console.log(number%2 === 0)
+}
+
+//isPrime(-7); // => false
+//isPrime(2); // => true
+//isPrime(11); // => false
+//isPrime(15); // => false
+
+
+/* ========== *
+* Challenge 8 *
+* =========== */
+
+
+function range(start, end) {
+  //your code goes here...
+	for(start; start <= end; start++){
+    console.log(start)
   }
-  return multiplyBy2;
 }
-const generatedFunc = createFunction();
-let result = generatedFunc(3) // 6
-```
-El código de arriba, la función es una fábrica de otra función que devuelve la **definición** de la función (pero no la ejecuta). Esa función devuelta recuerda todo lo que estaba en su escope. Se llamas a *generatedFunc()*, no se vuelve a ejecutar createFunction() porque esta guarda la referencia a la función interna y su entorno. En definitiva, la función *createFunction* es una fábrica de funciones que recuerda su *scope* y solo se ejecuta una vez
 
-### Closure scope
-La función devuelta tiene un link oculto **[[scope]]** a las propiedades que tiene acceso. La mochila con todos los datos se llama **Closure over variable environment (COVE)** y esta es persistente. Se le llama con mayor precisión: **Persistent Lexical Scope Reference Data (PLSRD)**
-
-### Multiple Closures
-Si guardamos el resultado de una función que devuelve otra función un par de veces, como ejecuta esa función en un nuevo contexto de ejecución, se crea otra función con su scope y es devuelta y almacenada en otra variable. Esta segunda ejecución es totalmente independiente de la primera.
-\*Javascript busca primero en la memoria local y si no encuentra lo que busca va a buscar al *Scope* que tiene linkeado con **[[Scope]]**. Si no lo encuentra aquí, va subiendo en la cadena de **Scope** hasta llegar al scope global
+//Uncomment the lines below to test your code
+//range(1,4) //=> 1, 2, 3, 4
+//range(4,2) //=>
 
 
-## Type coercion & metaprogramming
-### Math operators & User-Submitted Data
-Javascript viene con unos operadores aritméticos (* ** / % + ++ - -- ==). Estos operadores cojen los operandos de la derecha e izquierda.
+/* =========== *
+* Challenge 9 *
+* ============ */
 
-Cuando hacemos una operación de Integer (7) * String ("7"). Ese "*" detecta que necesita números para operar y ejecuta un Type Coercion a cada lado del operador y aplica ToNumber a cada uno para que se convierta en un número. En este caso, 7 * "3" es posible gracias al **Type coercion**.
 
-### Math operator Type coercion
-Tenemos operadores relacionales (< > <= =>).
+function myIndexOf(array, ele){
+  // your code here...
+  let found = -1
+	for(let [k, v] of array.entries()){
+    if(v === ele){
+      found = k
+      break
+    }
+  }
+  console.log(found)
+}
 
-Los operadores relacionales también aplican **Type Coercion**.
+//myIndexOf([1, 2, 3, 4, 5], 5) //=> 4
+//myIndexOf(["a", "b", "c"], "a") //=> 0
+//myIndexOf(["a", "b", "c"], "d") //=> -1
 
-Tenemos una excepción y es el operador **+** que si encuentra un operando **String** y otro numérico, aplica el Type Coercion de **ToString** y convierte el número en un **string**.
 
-Podemos forzar el **Type coercion** con la función **Number()** o con los operadores unarios, que son los que no necesitan otro operando, simplemente se pone delante de un **string**:
-- **+**: Transforma un string en un número.
-- **-**: Transforma un string en un número y lo vuelve negativo.
-- **!**: Convierte un valor en su opuesto booleano. Fuerza la coerción **ToBoolean**
-```javascript
-7 + "3" = "73"
-7 + +"3" = 10
-7 + Number("3") = 10
-```
+/* =========== *
+* Challenge 10 *
+* ============ */
 
-Para forzar **ToString**, podemos usar la función **String()** o usar `${}`:
-```javascript
-7 + "" = "7"
-String(7) = "7"
-`${7}` = "7"
-```
+function unique(array) {
+  //your code goes here...
+	let uniqueArray = new Set(array)
+  console.log([...uniqueArray])
+}
 
-### ToBoolean Coercion
-Cuando tenemos que evaluar una **condición** *(if, while, for, !, &&, ||)* que evalúa una cadena vacío ("") o un 0, aplica un ToBoolean coercion y lo convierte en un booleano **False**. Solo puede ser **True** o **False** dependiendo de si es un valor **falsy** o **truthy**:
+//unique([1, 1, 2, 3, 3]) // => [1, 2, 3]
+//unique(["a", "a", "c", "aa", "b", "b"]) // => ["a", "c", "aa", "b"]
 
->Falsy: False, 0, -0, 0n, "", null, undefined, NaN
->
->Todo lo demás es truthy, por ejemplo:<br>
->Truthy: "0", "false", [], {}, function(){}
->
->Truco pro: usar doble negación (!!) para convertir algo en booleano
 
-Esto puede provocar comportamientos no deseados, por eso existe el operador **===*** que no aplica ningún tipo de **Coercion**.
+/* =========== *
+* Challenge 11 *
+* ============ */
+
+function longestWord(sentence) {
+  // your code here...
+	let words = sentence.split(" ")
+  return words.reduce((acc, item) => acc.length > item.length ? acc : item)
+}
+
+//Uncomment the lines below to test your function:
+
+//console.log(longestWord('my JavaScript is exceptional')); // => 'exceptional'
+//console.log(longestWord('hate having hungry hippos')); // => 'hippos'
+//console.log(longestWord('JavaScript')); // => 'JavaScript'
+//console.log(longestWord('')); // => ''
+
+
+/* =========== *
+* Challenge 12 *
+* ============ */
+
+function disemvowel(string) {
+  // your code here...
+  let word = []
+  let vowels = ["a", "e", "i", "o", "u"]
+  for(let i = 0; i < string.length; i++){
+    if(!vowels.includes(string[i].toLowerCase())) word.push(string[i])
+  }
+  return word.join("")
+}
+
+
+//Uncomment the lines below to test your function:
+
+//console.log(disemvowel('CodeSmith')); // => 'CdSmth'
+//console.log(disemvowel('BANANA')); // => 'BNN'
+//console.log(disemvowel('hello world')); // => 'hll wrld'
+
+
+/* =========== *
+* Challenge 13 *
+* ============ */
+
+function divisibleByFivePairSum(array){
+  // your code here...
+  let result = []
+  for(let i = 0; i < array.length; i++){
+		for(let j = i+1; j < array.length; j++){
+      if((array[i]+array[j]) % 5 === 0){
+        result.push([i, j])
+      }
+    }
+  }
+  return result
+}
+
+
+//Uncomment the lines below to test your function:
+
+//console.log(divisibleByFivePairSum([1, 5, 2, 0, 4])); // => [ [ 0, 4 ], [ 1, 3 ] ]
+//console.log(divisibleByFivePairSum([13, 22, 8, -3, 12])); // => [[ 0, 1 ], [ 0, 3 ], [ 0, 4 ], [ 1, 2 ], [ 2, 3 ], [ 2, 4 ]]
+
+
+/* =========== *
+* Challenge 14 *
+* ============ */
+
+function highestScore(students) {
+  // your code here...
+	students = students.reduce((acc, item) => acc.score > item.score ? acc : item)
+  let student = ""
+  for(let s of students.name.split(" ")){
+    student += s.charAt(0)
+  }
+  return student + students.id
+}
+
+//Uncomment the lines below to test your function:
+
+var students = [
+{name: 'Will Sentance', id: 128, score: -42},
+{name: 'Jamie Bradshaw', id: 32, score: 57},
+{name: 'Lisa Simpson', id: 2, score: 99},
+{name: 'Luke Skywalker', id: 256, score: 94}
+];
+
+//console.log(highestScore(students)); //=> 'LS2'
+
+
+/* =========== *
+* Challenge 15 *
+* ============ */
+
+function mcd(a, b) {
+  while (b !== 0) {
+    let temp = b;
+    b = a % b;
+    a = temp;
+  }
+  return a;
+}
+
+function leastCommonMultiple(num1, num2) {
+  // your code here...
+  return (num1 * num2) / mcd(num1, num2)
+}
+
+
+//Uncomment the lines below to test your function:
+
+console.log(leastCommonMultiple(2, 3)); //=> 6
+console.log(leastCommonMultiple(6, 10)); //=> 30
+console.log(leastCommonMultiple(24, 26)); //=> 312
+
+
+/* ========== *
+* Extension 1 *
+* =========== */
+
+function arrayBuilder(count) {
+  // your code here...
+
+}
+
+
+//Uncomment the lines below to test your function:
+
+// console.log(arrayBuilder({'cats': 2, 'dogs': 1})); //=> ['cats', 'cats', 'dogs']
+// console.log(arrayBuilder({})); //=> []
+
+
+/* ========== *
+* Extension 2 *
+* =========== */
+
+function objectBuilder(count) {
+  // your code here...
+
+}
+
+
+//Uncomment the lines below to test your function:
+
+// console.log(objectBuilder(4)); //=> {
+  // 0: 0,
+  // 1: 5,
+  // 2: 10,
+  // 3: 15,
+  // 4: 20,
+// }
+// console.log(objectBuilder(0)); //=> { 0: 0 }
+
+
+/* ========== *
+* Extension 3 *
+* =========== */
+
+function secretCipher(sentence, cipher){
+  // your code here...
+
+}
+
+
+
+//Uncomment the lines below to test your function:
+
+// console.log(secretCipher("lqq me on flcebzzk" , { l : "a", q : "d", z: "o"})); //=> "add me on facebook"
+// console.log(secretCipher("where are you???" , { v : "l", '?' : "!"})) //=> "where are you!!!"
+// console.log(secretCipher("twmce" , { m : "n", t : "d", w : "a"})); //=> "dance"
+
+
+/* ========== *
+* Extension 4 *
+* =========== */
+
+function passingStudents(students) {
+  // your code here...
+
+}
+
+
+//Uncomment the lines below to test your function:
+
+// var students = [
+//   {
+//     "name": "Marco",
+//     "id": 12345,
+//     "grades": [{"id": 0, "score": 65}, {"id": 1, "score": 75}, {"id": 2, "score": 85}]
+//   },
+//   {
+//     "name": "Donna",
+//     "id": 55555,
+//     "grades": [{"id": 0, "score": 100}, {"id": 1, "score": 100}, {"id": 2, "score": 100}]
+//   },
+//   {
+//     "name": "Jukay",
+//     "id": 94110,
+//     "grades": [{"id": 0, "score": 65}, {"id": 1, "score": 60}, {"id": 2, "score": 65}]
+//   }
+// ];
+
+// console.log(passingStudents(students)); // => [ 'Marco', 'Donna' ]
+
+
+
