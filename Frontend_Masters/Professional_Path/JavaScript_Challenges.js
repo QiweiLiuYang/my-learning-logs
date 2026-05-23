@@ -133,20 +133,19 @@ function range(start, end) {
 
 function myIndexOf(array, ele){
   // your code here...
-  let found = false
+  let found = -1
 	for(let [k, v] of array.entries()){
     if(v === ele){
       found = k
       break
     }
   }
-  if(found) console.log(found)
-  else console.log(-1)
+  console.log(found)
 }
 
-myIndexOf([1, 2, 3, 4, 5], 5) //=> 4
-myIndexOf(["a", "b", "c"], "a") //=> 0
-myIndexOf(["a", "b", "c"], "d") //=> -1
+//myIndexOf([1, 2, 3, 4, 5], 5) //=> 4
+//myIndexOf(["a", "b", "c"], "a") //=> 0
+//myIndexOf(["a", "b", "c"], "d") //=> -1
 
 
 /* =========== *
@@ -155,11 +154,12 @@ myIndexOf(["a", "b", "c"], "d") //=> -1
 
 function unique(array) {
   //your code goes here...
-
+	let uniqueArray = new Set(array)
+  console.log([...uniqueArray])
 }
 
-// unique([1, 1, 2, 3, 3]) => [1, 2, 3]
-// unique(["a", "a", "c", "aa", "b", "b"]) => ["a", "c", "aa", "b"]
+//unique([1, 1, 2, 3, 3]) // => [1, 2, 3]
+//unique(["a", "a", "c", "aa", "b", "b"]) // => ["a", "c", "aa", "b"]
 
 
 /* =========== *
@@ -168,15 +168,16 @@ function unique(array) {
 
 function longestWord(sentence) {
   // your code here...
-
+	let words = sentence.split(" ")
+  return words.reduce((acc, item) => acc.length > item.length ? acc : item)
 }
 
 //Uncomment the lines below to test your function:
 
-// console.log(longestWord('my JavaScript is exceptional')); // => 'exceptional'
-// console.log(longestWord('hate having hungry hippos')); // => 'hippos'
-// console.log(longestWord('JavaScript')); // => 'JavaScript'
-// console.log(longestWord('')); // => ''
+//console.log(longestWord('my JavaScript is exceptional')); // => 'exceptional'
+//console.log(longestWord('hate having hungry hippos')); // => 'hippos'
+//console.log(longestWord('JavaScript')); // => 'JavaScript'
+//console.log(longestWord('')); // => ''
 
 
 /* =========== *
@@ -185,15 +186,20 @@ function longestWord(sentence) {
 
 function disemvowel(string) {
   // your code here...
-  
+  let word = []
+  let vowels = ["a", "e", "i", "o", "u"]
+  for(let i = 0; i < string.length; i++){
+    if(!vowels.includes(string[i].toLowerCase())) word.push(string[i])
+  }
+  return word.join("")
 }
 
 
 //Uncomment the lines below to test your function:
 
-// console.log(disemvowel('CodeSmith')); // => 'CdSmth'
-// console.log(disemvowel('BANANA')); // => 'BNN'
-// console.log(disemvowel('hello world')); // => 'hll wrld'
+//console.log(disemvowel('CodeSmith')); // => 'CdSmth'
+//console.log(disemvowel('BANANA')); // => 'BNN'
+//console.log(disemvowel('hello world')); // => 'hll wrld'
 
 
 /* =========== *
@@ -202,13 +208,22 @@ function disemvowel(string) {
 
 function divisibleByFivePairSum(array){
   // your code here...
+  let result = []
+  for(let i = 0; i < array.length; i++){
+		for(let j = i+1; j < array.length; j++){
+      if((array[i]+array[j]) % 5 === 0){
+        result.push([i, j])
+      }
+    }
+  }
+  return result
 }
 
 
 //Uncomment the lines below to test your function:
 
-// console.log(divisibleByFivePairSum([1, 5, 2, 0, 4])); // => [ [ 0, 4 ], [ 1, 3 ] ]
-// console.log(divisibleByFivePairSum([13, 22, 8, -3, 12])); // => [[ 0, 1 ], [ 0, 3 ], [ 0, 4 ], [ 1, 2 ], [ 2, 3 ], [ 2, 4 ]]
+//console.log(divisibleByFivePairSum([1, 5, 2, 0, 4])); // => [ [ 0, 4 ], [ 1, 3 ] ]
+//console.log(divisibleByFivePairSum([13, 22, 8, -3, 12])); // => [[ 0, 1 ], [ 0, 3 ], [ 0, 4 ], [ 1, 2 ], [ 2, 3 ], [ 2, 4 ]]
 
 
 /* =========== *
@@ -217,37 +232,50 @@ function divisibleByFivePairSum(array){
 
 function highestScore(students) {
   // your code here...
-
-
+	students = students.reduce((acc, item) => acc.score > item.score ? acc : item)
+  let student = ""
+  for(let s of students.name.split(" ")){
+    student += s.charAt(0)
+  }
+  return student + students.id
 }
 
 //Uncomment the lines below to test your function:
 
-// var students = [
-// {name: 'Will Sentance', id: 128, score: -42},
-// {name: 'Jamie Bradshaw', id: 32, score: 57},
-// {name: 'Lisa Simpson', id: 2, score: 99},
-// {name: 'Luke Skywalker', id: 256, score: 94}
-// ];
+var students = [
+{name: 'Will Sentance', id: 128, score: -42},
+{name: 'Jamie Bradshaw', id: 32, score: 57},
+{name: 'Lisa Simpson', id: 2, score: 99},
+{name: 'Luke Skywalker', id: 256, score: 94}
+];
 
-// console.log(highestScore(students)); //=> 'LS2'
+//console.log(highestScore(students)); //=> 'LS2'
 
 
 /* =========== *
 * Challenge 15 *
 * ============ */
 
+function mcd(a, b) {
+  while (b !== 0) {
+    let temp = b;
+    b = a % b;
+    a = temp;
+  }
+  return a;
+}
+
 function leastCommonMultiple(num1, num2) {
   // your code here...
-
+  return (num1 * num2) / mcd(num1, num2)
 }
 
 
 //Uncomment the lines below to test your function:
 
-// console.log(leastCommonMultiple(2, 3)); //=> 6
-// console.log(leastCommonMultiple(6, 10)); //=> 30
-// console.log(leastCommonMultiple(24, 26)); //=> 312
+console.log(leastCommonMultiple(2, 3)); //=> 6
+console.log(leastCommonMultiple(6, 10)); //=> 30
+console.log(leastCommonMultiple(24, 26)); //=> 312
 
 
 /* ========== *
