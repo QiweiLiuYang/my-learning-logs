@@ -184,10 +184,53 @@ const anotherLogin = userCredentials // 10001
 
 Esto pasa porque están en el **Heap** y estamos comparando las referencias, que no son iguales.
 
-
 ### Date Objects
 Tenemos una función que viene por defecto llamado **Date()** que tiene una propiedad oculta **[[DateValue]]** que almacena el total de milisegundos (ms) transcurridos desde el 1 de enero de 1970.
 
 Si ejecutamos **Date()** nos devolverá un objeto vacío con una propiedad oculta **[[DateValue]]**
 
 \* Para acceder a las propiedades o claves de un objeto, la notación de brackets ( *[ ]* ) evalúa primero lo que hay dentro. La notacición de puntos no evalúa nada
+
+### ToPrimitive Coercion
+Existe el **ToPrimitive** coercion que llama a la propiedad oculta **@@toPrimitive** que convierte un objeto a un dato primitivo y podemos hacer cálculos y comparaciones con él. Que tipo de **coercion** va a utilizar es determinado por el operador.
+
+Por ejemplo, en los objetos de **Date()**, aparte de devolvernos un objeto vacío con la propiedad oculta **[[DateValue]]**, también añade otra propiedad oculta que es **@@toPrimtive** que tiene de valor una función que devuelve el valor de **[[DateValue]]** aplicado **ToNumber** coercion.
+
+Básicamente, **@@toPrimitive** es una función oculta en un objeto que determina como convertir el objeto a un dato primitivo.
+
+### Implement @@toPrimitive
+\*Todos los **NaN** son diferentes, por lo que si hacemos NaN == NaN o NaN === NaN va a dar false
+
+No podemos modificar o añadir **@@toPrimitive** con la notación de puntos (object.@@toPrimitive no funcionará).
+
+Podemos modificar o añadir **@@toPrimitive** utilizando el tipo de dato primitivo **Symbol**, que contiene algunos **Well-Known Symbol** como **toPrimitive** (que guarda el valor de **@@toPrmitive**) o **iterator**. Para usarlo, tenemos que utilizar obligatoriamente la notación de corchetes debido a que los corchetes interpretan código, y al interpretarse **Symbol.toPrimitive** se convierte en **@@toPrimitive**.
+```javascript
+const userStored = {name: "Will", id: 105}
+const userSubmitted = {name: "Will", id: 105}
+
+function onSubmit(){
+  if(+userStored === +userSubmitted){
+
+  }
+}
+
+function coerce(){return this.id}
+
+userStored[Symbol.toPrimitive] = coerce
+userSubmitted[Symbol.toPrimitive] = coerce
+
+onSubmit()
+```
+
+### Symbols & Metaprogramming
+Cuando se ejecuta la función que está dentro de **@@toPrimitive**, este le inserta automáticamente un parámetro que será **"number"** o **"string"**. Con esto, sabemos qué coerce aplicar en cada caso
+```javascript
+function coerce(hint){
+  if(hint === "number") return number // Por eemplo con el (+) o Number()
+  if(hint === "string") return string // Por ejemplo `${}` o String()
+}
+```
+
+El tipo de dato **Symbol** nos permite añadir propiedades semi-ocultas a objetos. Estos tienen unos identificadores (etiqueta) únicos que no pueden ser escritos directamente para que no sobreescriban el código del desarrollador. Por ejemplo el **@@toPrimitive** no es lo mismo que toPrimitive.
+
+Gracias a que **Symbol** tiene unos **Well-Known Symbols**, podemos acceder y modificar propiedades (que estaban ocultas) para cambiar el comportamiento por defecto de Javascript. Esto se le llama **Metaprogramming**
