@@ -111,3 +111,28 @@ Tenemos objetos que vienen de serie, como **Document**. Otro ejemplo son **Array
 ## Event & Handlers
 ### Event Object
 Usamos **.addEventListener(evento, callback)** para capturar y añadir un comportamiento a un evento. En el callback, se le pasa un objeto **event** que lo podemos capturar, este objeto guarda información sobre qué lo activó.
+
+## Map & Filter
+### Map & Filter
+Array.map(callback) devuelve un nuevo array aplicando una función a cada elemento del array dado.
+Array.filter(callback) crea un nuevo array con la condición de que el elemento devuelva true en la función callback.
+"String".includes("substring") devuelve true si existe un string dentro de otro string. También sirve para arrays [].includes("valor")
+"String".endsWith("str") devuelve true si el string termina con el string que se le pasa. También podemos usar "String".slice(-1) que nos devuelve el último caracter.
+
+```javascript
+[1, 2, 3].map(n => n * 2) // Devuelve [2, 4, 6]
+```
+
+En javascript existen los **template literals** que nos habilita interpolar variables en un string usando `` y ${variable} que evaluará lo que hay dentro y lo devuelve como string.
+
+### Spread
+Podemos usar el **spread (...)** para "desmontar" o expandir un array o un iterable, básicamente es sacarlos fuera del array y devolverlos como valores unitarios. 
+```javascript
+const skills = ["HTML", "CSS", "JavaScript"];
+const newSkills = ["React", "TypeScript", "Node"];
+skills.push(...newSkills);
+console.log(skills);
+```
+
+[Array].push() // Modifica el array original introduciendo un nuevo elemento
+[Array].concat() // Devuelve un array agregando el argumento

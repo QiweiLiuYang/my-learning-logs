@@ -126,8 +126,10 @@
         button.addEventListener("click", (event) => {
             console.log(`Click en ${event.target}`)
             if(!isCorrect(event.target.value)){
-                explanation.textContent = fact.explanation
+                button.classList.add("incorrect");
+                explanation.textContent = fact.explanation;
             }else{
+                button.classList.add("correct");
                 explanation.textContent = "¡Correcto!";
             }
             for(let button of optionButtons){
