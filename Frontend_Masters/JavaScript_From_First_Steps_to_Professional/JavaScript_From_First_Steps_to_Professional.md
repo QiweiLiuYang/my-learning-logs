@@ -95,3 +95,19 @@ let js = {
 js.name // JavaScript
 ja["is Awesome"] // true
 ```
+
+Podemos usar el operador **delete** para eliminar una propiedad del objeto.
+Podemos usar **Object.freeze(Objeto)** para hacer inmutable a un objeto.
+Podemos usar **Object.isFrozen(Objeto)** que devuelve un booleano si un objeto está freezeado
+\* Una vez freezeado, no se puede desfreezear. Pero podemos clonarlo.
+
+### Object Methods
+Los métodos es una propiedad especial que apunta a una función. Se puede llamar con la notación de puntos y paréntesis ().
+Con la palabra clave (keyword) **this** podemos acceder a otras propiedades del objeto. Muy útil cuando se usa una función que está dentro del objeto. Básicamente hace referencia al propio objeto mismo.
+
+### Bult-In Objects
+Tenemos objetos que vienen de serie, como **Document**. Otro ejemplo son **Arrays, console, Math, String**
+
+## Event & Handlers
+### Event Object
+Usamos **.addEventListener(evento, callback)** para capturar y añadir un comportamiento a un evento. En el callback, se le pasa un objeto **event** que lo podemos capturar, este objeto guarda información sobre qué lo activó.
