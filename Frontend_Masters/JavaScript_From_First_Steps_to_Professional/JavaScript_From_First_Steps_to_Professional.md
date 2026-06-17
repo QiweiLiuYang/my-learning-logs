@@ -136,3 +136,57 @@ console.log(skills);
 
 [Array].push() // Modifica el array original introduciendo un nuevo elemento
 [Array].concat() // Devuelve un array agregando el argumento
+
+## Doggos Quiz Game
+### While Loops
+while(condicion){code} // Permite repetir un bloque de código mientras que la condicion sea true
+
+
+### setTimeout
+setTimeout(callback, time) // Ejecuta la función callback después de que pase un tiempo determiado por el argumento time (en **ms**)
+
+## Data Fetching & Promises
+### APIs & fetch
+**fetch(URI)** // Pide a la URI especificada un recurso y nos devuelve una promesa
+
+### Working with Promises
+Una promesa es un código asíncrono que tarda tiempo en procesarse y que en un principio no tiene ningún valor pero que **promete** que devolverá algo en el futuro.
+
+Puede tener tres estados:
+- pending: Esperando al valor
+- fulfilled (resolved): Ya tenemos el valor
+- rejected: No se ha podido obtener el valor, finalizado
+
+### Using Await with Promises
+La keyword **await** bloquea la ejecución hasta que la **promesa** se resuelva y nos devuelva el valor, que será un **Response**, en vez de una **promesa** pendiente. Esto nos permite manejar las operaciones asíncronas de una manera parecido a las operaciones síncronas. Es una forma de convertir un **Promise** a un **Response**.
+
+Para los objetos de tipo **response**, tenemos otra función **.json()** que lee el body y lo parsea a un objeto **JSON**. Devuelve también una promesa asi que necesitamos usar **await** o **.then(callback)**.
+
+\* Hasta ahora tenemos dos objetos nuevos, **Promise y Response**.
+
+Existe una forma de empaquetar todo eso:
+fetch().then(res => code) // Pasa al argumento callback un argumento (para la función callback) que será la respuesta del fetch (un **Response**).
+
+**Se recomienda más uar await.**
+
+## Destructuring
+### Destructuring Objects & Arrays
+La desestructuración es una forma de **declarar/reasignar** múltiples variables a la vez extrayendo los valores de un objeto a través del **nombre de sus propiedades**. El orden de los nombres de las propiedades no importa.
+Ejemplo con un objeto:
+```javascript
+const spice = {name: "Emma", nickname: "Baby"}
+let {name, nickname} = spice // name = Emma, nickname = Baby
+let {nickname, name} = spice // nickname = Baby, name = Emma
+```
+
+Por otra parte, también podemos desestructurar arrays de una forma muy similar. En este caso el orden si importa y el dato que vamos a obtener depende de la posición. Usamos comas para saltarnos posiciones. También podemos usar el spread (...) para capturar el resto de valores. :
+```javascript
+const array = [1, 2, 3, 4, 5];
+let [primero, segundo, cuarto] = array // primero = 1, segundo = 2, cuarto = 3
+let [,, tercero] = array // tercero = 3
+let [primero, segundo, ...otros] = array // primero = 1, segundo = 2, otros = [4, 5]
+
+// Podemos invertir un array así
+let colores = ["rojo", "azul"];
+[colores[1], colores[0]] = [colores[0], colores[1]]; // [] Indica que es una desestructuración, en colores[1] se guardará el valor de colores[0] y en colores[0] se guardará el valor de colores[1], dando así a una inversión del array.
+```
