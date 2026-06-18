@@ -190,3 +190,33 @@ let [primero, segundo, ...otros] = array // primero = 1, segundo = 2, otros = [4
 let colores = ["rojo", "azul"];
 [colores[1], colores[0]] = [colores[0], colores[1]]; // [] Indica que es una desestructuración, en colores[1] se guardará el valor de colores[0] y en colores[0] se guardará el valor de colores[1], dando así a una inversión del array.
 ```
+
+## Async
+### Async Functions
+**await** solo está disponible en funciones **async** o en el **Top-Level Async** que son ficheros Javascript de tipo **módulo**.
+
+Podemos crear una función asíncrona con la keyword **async**. Como se vuelve asíncrona, en su return no nos devolverá un valor, si no otra Promesa que tendremos que resolver con un **await**.
+
+## Modules
+### Modules
+En el HTML, podemos abrir una etiquete <script> y le podemos poner un **type="module"** para transformarlo en un módulo. Que sea un módulo, nos habilita los **Top-Level Await**. Aparte de eso, se usa para que proyectos complejos se administren mejor separando scopes.
+
+También un módulo crea su propio módulo, es decir, si tenemos dos etiquetas HTML con javascript, uno no podrá acceder al otro si no se importa. Si no se pone **type="module"** es como si los dos estuvieran en el mismo bloque.
+
+Para que un módulo pueda ver a otro módul, podemos usar las keyword **import** y **export**. La sintaxis es **export {variable|objeto}** y para importarlo es con **import {variable|objeto} from "ruta"**.
+
+Se puede exportar variables, objetos, funciones en grupo o agregando la keyword **export** al inicio de la declaración. A la hora de importarlos es obligatorio hacerlo con **{}** salvo que se use **export default**, que solo puede haber uno en todo el módulo y solo exporta una cosa. Dejando de lado eso, a la hora de importarlo, tiene que tener el nombre exácto de lo que hemos exportado. Le podemos cambiar el nombre con **as** tanto a la hora de exportar o importar.
+```javascript
+const PI = 3.14;
+function saludar(){console.log("Hola mundo")};
+export const numeroMagico = 10;
+export {PI as numeroPI, saludar};
+
+import {numeroPI as miPI, numeroMagico, saludar} from "./ruta";
+
+
+const PI = 3.1416;
+export default PI; // Espera una expresión, función o clase y no una declaración
+
+import PI from "./ruta";
+```
