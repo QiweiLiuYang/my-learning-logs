@@ -234,3 +234,36 @@ function coerce(hint){
 El tipo de dato **Symbol** nos permite añadir propiedades semi-ocultas a objetos. Estos tienen unos identificadores (etiqueta) únicos que no pueden ser escritos directamente para que no sobreescriban el código del desarrollador. Por ejemplo el **@@toPrimitive** no es lo mismo que toPrimitive.
 
 Gracias a que **Symbol** tiene unos **Well-Known Symbols**, podemos acceder y modificar propiedades (que estaban ocultas) para cambiar el comportamiento por defecto de Javascript. Esto se le llama **Metaprogramming**
+
+## Asynchronous JavaScript & the event loop
+### Asynchronous Code Overview
+En el motor de JavaScript tenemos 3 partes principalmente:
+- Thread of execution
+- Memory/Variable environment
+- Call stack
+
+Pero tenemos que añadirle más partes que están fuera de javascript (navegador o servidor externo):
+- Web Browser APIs/Node background APIs
+- Primises
+- Event loop, Callback/Task queue and micro task queue
+
+Básicamente, el ecosistema de JavaScript se compone de partes que ofrece y añade el navegador y que podemos acceder a través de JavaScript: JavaScript + DOM (document) + Service workers + console + Times (setTimeout, setInterval) + Network (XHR, fetch) + Index DB + Local Storage
+
+### JavaScript vs. Browser APIs
+Las partes anteriores mencionadas no se ejecutan con el motor de JavaScript, lo hace la API del navegador (el navegador en si).
+Básicamente el navegador le presta al motor de JavaScript unas herramientas, funciones y métodos que los navegadores exponen. De esta manera, puede interactuar con el mundo exterior.
+
+### Callback Queue
+**Callback/Task queue** es la sala de espera entre **JavaScript** y el **Web Browser API**. En esta **Callback Queue** guarda todo lo que está listo  para ejecutarse una vez que el hilo principal termine todos sus procesos y la **Call Stack** esté vacía, una vez que termine, empeza a agregar al **Call Stack** lo que había en el **Callback Queue**.
+
+### Event Loop
+¿Cómo sabe JavaScript que el Call Stack está vacío, ha terminado de ejecutar el código global o que haya tareas pendientes en la Callback Queue?
+Eso es el **Event Loop** y su trabajo es revisar constantemente si hay algo que ejecutar, si hay algo en el Call Stack o el Callback Queue. Revisando eso y con la condición que no haya nada en el **Call stack** ni código pendiente de ejecutar en el contexto global, es cuando permite mover una tarea del Callback Queue al Call Stack
+
+### Promises Overview
+Las promesas son un tipo de objeto especial que es un **placeholder** del valor que va a ser devuelto por la función ejecutada en segundo plano.
+
+### Promises and the Fetch API
+La función **fetch(uri)** sirve para hacer un **GET** (obtener datos) de un recurso en la red, el **fetch** usa una herramienta del navegador (**Network**). Le podemos pasar un segundo argumento con un objeto de configuración para hacer un **POST**. Ambos usan el protocolo **HTTP**.
+
+El objeto **Promise** tiene campos ocultos, uno de ellos es **[[PromiseResult]]** que contiene el resultado de la petición, hasta que no se complete, es **undefined**. Tiene otro campo oculto que es **[[PromiseReactions]]** que contiene una callback a ejecutar una vez finalice su ejecución. Podemos hacer usar **Promise.then(Callback)** para registrar la función callback a ejecutar.
