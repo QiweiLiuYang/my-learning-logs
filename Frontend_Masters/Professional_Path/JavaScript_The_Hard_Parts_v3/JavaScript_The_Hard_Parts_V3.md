@@ -266,4 +266,125 @@ Las promesas son un tipo de objeto especial que es un **placeholder** del valor 
 ### Promises and the Fetch API
 La función **fetch(uri)** sirve para hacer un **GET** (obtener datos) de un recurso en la red, el **fetch** usa una herramienta del navegador (**Network**). Le podemos pasar un segundo argumento con un objeto de configuración para hacer un **POST**. Ambos usan el protocolo **HTTP**.
 
-El objeto **Promise** tiene campos ocultos, uno de ellos es **[[PromiseResult]]** que contiene el resultado de la petición, hasta que no se complete, es **undefined**. Tiene otro campo oculto que es **[[PromiseReactions]]** que contiene una callback a ejecutar una vez finalice su ejecución. Podemos hacer usar **Promise.then(Callback)** para registrar la función callback a ejecutar.
+El objeto **Promise** tiene campos ocultos, uno de ellos es **[[PromiseResult]]** que contiene el resultado de la petición (un objeto **Response**), hasta que no se complete, es **undefined**. Tiene otro campo oculto que es **[[FulfillReaction]]** que contiene una callback a ejecutar una vez finalice su ejecución. Podemos hacer usar **Promise.then(Callback)** para registrar la función callback a ejecutar.
+
+### setTimeout & fetch Execution
+Para el hilo de ejecución del siguiente bloque de código:
+```javascript
+function display(data){console.log(data)};
+function printHello(){console.log("Hello")};
+function blockFor300ms(){/* blocks js thread for 300ms */};
+
+setTimeout(printHello, 0);
+
+const futureData = fetch("https://tiktok.com/will);
+futureData.then(display);
+
+blockFor300ms();
+console.log("Me first!");
+```
+
+### Microtask Queue
+Siguiendo con el anterior punto y el bloque de código que teníamos...
+Lo que va a salir en consola va a ser el siguiente orden:
+1. blockFor300ms()
+2. console.log("Me First!")
+3. futureData.then(display)
+4. setTimeout(printHello, 0)
+
+Esto es debido a que las promesas van a otra cola, que es la **Microtask Queue** que tiene prioridad sobre la **Callback Queue**. Esto quiere decir que para que las tareas en **Callback/Task queue** se ejecuten, tiene que estar la **Microtask Queue** vacía. Entonces el **event loop** checkea la ejecución global, call stack, microtask queue y por último la callback queue.
+
+### Microtask Queue Q&A
+A parte de las promesas, también entra dentro los **.catch()**, los **.finally()** y obviamente los **async/await**. También podemos agregar a la **Microtask Queue** funciones callback manualmente con la función **queueMicrotask(callback)**. Y por último, está la **Browser API** ofrece la clase **MutationObserver**.
+
+Las promesas también tienen un campo oculto **[[RejectReaction]]** que guarda funciones a ejecutar cuando hay un error. Se puede añadir con **Promise.catch()**, como segundo argumento de un **Promise.then(succes, error)** o en un bloque **catch de try/catch**.
+
+Podemos agregar una forma de abortar un **fetch** si excede un tiempo, con la clase **AbortSignal** que contiene un método estático **.timeout(ms)**. Se lo podemos pasar al segundo argumento de un fetch, que es un objeto de configuración. Quedaría de esta forma: **fetch(url, {signal: AbortSignal.timeout(200)})**.
+
+## Classes & Prototypes (OOP)
+### Object-Oriented JavaScript
+En JavaScrypt no tiene una implementación nativa de OOP, si no que usa **prototype** como mecanismo que provee funcionalidad de OOP. Una de las razones por la cual se usa OOP es porque puedes tener una función que haga algo en algún lado entre 100000 líneas de código y no tener la accesible cuando la quieres usar. OOP soluciona eso implementando en el objeto mismo esa funcionalidad.
+
+Aunque existan las keywords **new** y **class**, solo es azúcar sintáctico. Por debajo, el motor de JavaScript utiliza la cadena de **Prototype**.
+
+### Create JavaScript Objects
+El término de encapsulamiento es almacenar funciones con sus datos asociados dentro de un objeto.
+
+Tenemos dos maneras de crear un objeto, declarando una variable con {} y sus pares de clave:valor dentro. O también lo podemos crear con una declaración vacío e ir creando sobre la marcha propiedades a través la **notación de punto** y asignarle valor a cada clave. Hereda de **Object.prototype** por lo que tiene métodos como **obj.toString()**..
+
+De la misma manera, podemos crear un objeto vacío con **Object.create(null)** y a través de la notación de punto ir agregándole pares de clave:valor. Este objeto viene totalmente vacío (pelado) y no heredad de nada.
+
+\* Es mejor no abusar de la notación de puntos porque ofrece un rendimiento peor que declarar desde un inicio las propiedades.
+
+### Generate Objects Using a Function
+Lo anterior rompe la regla **DRY (Don't repeat yourself)**. Podemos crear una función donde la pasemos por argumento datos y que lo haga por nosotros y retornarlo en vez de repetir un bloque de código igual.
+
+### Prototype Chain
+Lo malo de lo anterior es la eficiencia y uno de los más afectados es la memoria. Esto es debido a que ocupamos memoria para la función dentro del objeto y para los datos del objeto en si. Podemos usar **Object.create(objetoPlantilla)** para crear una copia vacía del objeto dado en el argumento. El objeto plantilla tendrá en su interior los métodos que queramos que tengan incluidos. El objeto creado con **Object.create(objetoPlantilla)** no tendrá en su interior el contenido de la plantilla, si no que un link oculto **[[Prototype]]** que lo conecta con **objetoPlantilla**. Cuando se llame a un método y no lo encuentra en el objeto creado, el link lo lleva a su prototipo y ahí lo encuentra y lo ejecuta con el **scope** del objeto creado. En el **Heap** solo existe **objetoPlantilla** y los datos en el objeto creado.
+
+### hasOwnProperty & Object Prototype
+Tenemos un método para los objetos que es **obj.hasOwnProperty(Propiedad)** que nos devuelve un booleano si tiene la propiedad pasado como argumento dentro de él, es decir, que no lo ha heredado. Solo busca dentro del objeto en sí sin buscar de ningún hilo ni "padre".
+
+El método **obj.hasOwnProperty(Propiedad)** lo ofrece el final de la cadena o árbol genealógico, **Object.prototype**. En él encontraremos otros métodos útilas aparte del mencionado. Más allá de **Object.prototype** está **null**, por lo que devolvería **undefined**.
+
+Todos los objetos nacen de **Object.prototype**, a excepción del método **Object.create(objetoPlantilla)** que pone entre medio el **objetoPlantilla**, pero sigue siendo un paso más hasta llegar a **Object.prototype**.
+
+### Arrow Functions & this Keyword
+Partimos de este trozo de código:
+```javascript
+function userCreator(name, score){
+  const newUser = Object.create(userFunctionStore);
+  newUser.name = name;
+  newUser.score = score
+  return newUser;
+}
+
+const userFunctionStore = {
+  increment: function(){
+    function add1(){this.score++;}
+    add1()
+  }
+}
+
+const user1 = userCreator("Ari", 3);
+const user2 = userCreator("Jae", 5);
+user1.increment();
+```
+
+Cuando llamamos a user1.increment(), se le pasa como argumento implícito **this** que tendrá como valor lo de la izquierda del **.**. Pero en este caso, dentro del método **increment()** se llama a otro métdo **add1()** que tendrá su propio **Execution context** y su **Local memory**. Entonces se le pasa también de manera implícita **this** pero en este caso no tenemos un **.** ni un objeto a la izquierda, por lo que recae al objeto global **window**. Es decir, si no hay un **objeto** y un **.**, es como si se llamara con **window.metodo()**.
+
+Hace tiempo, se usaba un truco y era crear una variable **that = this** porque las funciones tienen acceso al **scope** exterior. Hoy en día podemos evitar eso usando las **Arrow functions**, que adopta el **this** del lugar físico en el que se crean (**ámbito léxico**), dicho de otra manera, comparte el **scope** del método. Pero los objetos no crean un nuevo **ámbito léxico**, solo las funciones y bloques de código con **{}**. Por eso es interesante usar **Arrow functions** dentro de un método para compartir el mismo **this**. Pero si lo usas fuera de un método, **this** apuntará a **window**.
+
+### The new Keyword
+Podemos automatizar la instanciación de una clase con la keyword **new**, esto nos crea un nuevo objeto, lo *linkea* a una cadena de **prototype** y devuelve el nuevo objeto. Tenemos que refactorizar la función creadora y adaptarla a como funciona **new**. Dentro de la función creadora refactorizada, se referira al objeto creado como **this**.
+
+\* Las funciones en javascript son funciones y objetos a su vez. Por lo cual podemos crear propiedades con la notación de puntos o paréntesis (**[]**). Un objeto función tiene en su parte de objeto una propiedad llamado **prototype**, diferente a **[[prototype]]**. Dentro de la propiedad **prototype** podemos almacenar funciones.
+
+### Refactor userCreator with new Keyword
+Al aplicar la lógica del **new** Keyword se nos quedaría así:
+```javascript
+function userCreator(name, score){
+  // const newUser = Object.create(userFunctionStore);  Crea un objeto vacío y lo asigna a "this"
+  //                                                    Vincula el [[prototype]] de this al ".prototype" de la función
+
+  this.name = name; // Al objeto creado (this) se le asigna una propiedad (clave:valor) name
+  this.score = score;
+  // return newUser;  Devuelve automáticamente el objeto creado
+}
+
+userCreator.prototype = function(){this.score++;};
+
+// const userFunctionStore = {
+//   increment: function(){
+//     function add1(){this.score++;}
+//     add1()
+//   }
+// }
+
+const user1 = userCreator("Ari", 3);
+const user2 = userCreator("Jae", 5);
+user1.increment();
+```
+
+Básicamente la keyword **new** crea un **this** que es un objeto vacío, asigna **[[prototype]]** a **funcion.prototype** y devuelve el objeto **this**.
+Después le asignamos una propiedad al objeto **prototype** de la función. Esa propiedad contendrá una función anónima que se le pasará por argumento de forma implícita **this** y que tendrá acceso el objeto que hemos creado.
