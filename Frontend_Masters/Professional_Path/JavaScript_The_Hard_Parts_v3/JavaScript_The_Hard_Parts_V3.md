@@ -388,3 +388,77 @@ user1.increment();
 
 Básicamente la keyword **new** crea un **this** que es un objeto vacío, asigna **[[prototype]]** a **funcion.prototype** y devuelve el objeto **this**.
 Después le asignamos una propiedad al objeto **prototype** de la función. Esa propiedad contendrá una función anónima que se le pasará por argumento de forma implícita **this** y que tendrá acceso el objeto que hemos creado.
+
+### The class Keyword
+Tenemos azúcar sintáctico que nos facilita todo este trabajo, la keyword **class**. Por convención, a las funciones constructoras empiezan por **mayúscula**. Una función **class** nos ayuda a declarar todo lo necesario del objeto en un mismo bloque de código. Para llamar a una función **class** lo tenemos que hacer con la keyword **new**. Si bien cuando la declaramos no tiene **()** para pasarle argumentos, cuando lo llamamos si que lo tiene y esos serán los parámetros que pida **constructor**. También nos ahorra usar la función **userCreator(name, score)**, que ahora pasa a llamarse **constructor(name, score)** y todos los métodos que se encuentren dentro del **class** se asocian al **prototype** de **constructor**.
+```javascript
+class UserCreator{
+  constructor(name, score){ // function userCreator(name, score){}
+    this.name = name; // this.name = name;
+    this.score = score; // this.score = score;
+  };  // };
+  increment(){this.score++;}; // userCreator.prototype.increment = function(){this.score++;};
+  login(){console.log("login");}; // userCreator.prototype.login = function(){console.log("login");};
+};
+```
+
+Es como lo que decíamos, una función tiene una parte de objeto y otra parte de función. En la parte de función se alberga el **constructor**, que viene siendo el equivalente a la función que usábamos para crear y devolver el objeto, de ella se encuentran las propiedades. En la parte del objeto se encuentra los métodos métodos que se vincularán al **prototype** de **constructor**.
+
+Dentro del cuerpo de una **class** no podemos usar declaraciones de variables **(let, const, var)**. Podemos declarar propiedades sin usar **let, var, const** y esta se va dentro del constructor automáticamente (como hicieras this.propiedad = propiedad) al igual que un método se va al **prototype**.
+
+Resumiendo, una clase tiene la siguiente estructura:
+```javascript
+class NombreClase{
+  constructor(argumento1, argumento2, argumentoN){
+    this.argumento1 = argumento1;
+    this.total = this.argumento1 + argumento2 * argumentoN;
+  }
+
+  metodos(){
+    ...
+  }
+}
+```
+
+### Public Static Fields
+Tenemos otra keyword **static** que lo usamos en la parte del cuerpo de **class**. Esto simplemente nos permite crear un método o propiedad fuera de **prototype** en la parte de objeto de **class**. Para acceder a este método simplemente lo hacemos con **NombreClase.métodoEstático()**.
+
+Por otra parte tenemos las **public instance fields** que es lo que hablábamos antes pero ahora lo extiendo. Si declaramos una propiedad sin **let, const, var** fuera de **constructor**, esa propiedad va a una propiedad oculta de la parte de objeto de **class** y se llama **[[Fields]]** a la cual añadira todas a **construct** como **this.propiedad = propiedad**.
+
+### Public Instance Fields
+Cuando declaramos parámetros de tipo variables en una función **class**, estas se van a una propiedad de tipo objeto oculta que tiene la parte de objeto de **class**, se llama **[[Fields]]**. Cuando se llama a la **class**, el motor de JavaScript recorre ese objeto y por cada propiedad, se lo añade al objeto **this** que crea **constructor**. Así cada instancia de **class** tiene una copia de la propiedad definida en la **class**. Básicamente lo que hace es **[[Fields]].forEach(e => this[e] = e)**
+
+### Private Instance Fields
+En JavaScript podemos encapsular (ocultar o hacer inaccesible funcionamiento o propiedades) propiedades y funciones de una clase añadiendo **#** al principio de una propiedad. Solo podremos acceder desde dentro de la clase y sus métodos con **#nombrePropiedad**. Siempre deberemos declararlo fuera del **constructor** y asignarle (o no) un valor en el **constructor**.
+```javascript
+class UserCreator{
+  #score // sets up a private property on the returned object
+  constructor(name, score){
+    this.name = name;
+    this.#score = score;
+  }
+  increment(){this.#score++}
+  login(){this.loggedIn = true} // crea y asigna una propiedad
+}
+const user1 = new UserCreator("Ari", 3)
+user1.increment()
+// user1.#score now 4 (only acesible from increment)
+```
+
+### Private Static Fields
+```javascript
+class UserCreator{
+  static #count = 0
+  constructor(name, score){
+    if(UserCreator.#count > 2){throw new Error("Max users reached)}
+    this.name = name
+    this.score = score
+    UserCreator.#count++
+  }
+  increment(){this.score++}
+}
+const user1 = new UserCreator("Ari", 3)
+const user2 = new UserCreator("Jae", 5)
+const user3 = new UserCreator("Tam", 9) // Error: Max users reached
+```
+En esta función le estamos poniendo la keyword **static** y haciendola privada con el **#** a la propiedad que estamos declarando en el cuerpo de la parte de objeto de **class**. Esto nos crea una propiedad que estará en la parte de objeto, privada pero común a todos los objetos creados a partir de ahí. Es una propiedad de UserCreator y no de los objetos instanciados (ocurre igual con las funciones estáticas). Por ejemplo, cuando se crea user1, #count pasa a valer 1 y antes de llamar a **constructor** de user2, #count ya vale 1.
