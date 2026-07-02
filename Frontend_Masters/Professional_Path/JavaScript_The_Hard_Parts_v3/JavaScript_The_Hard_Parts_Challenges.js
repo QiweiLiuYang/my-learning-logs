@@ -284,7 +284,12 @@ console.log(leastCommonMultiple(24, 26)); //=> 312
 
 function arrayBuilder(count) {
   // your code here...
-
+	const array = []
+  // console.log(Object.entries(count))
+  for(let [k, v] of Object.entries(count)){
+    for(let i = 0; i < v; i++){array.push(k)}
+  }
+  return array
 }
 
 
@@ -300,7 +305,11 @@ function arrayBuilder(count) {
 
 function objectBuilder(count) {
   // your code here...
-
+  const object = {}
+  for(let i = 0; i <= count; i++){
+    object[i] = i*5
+  }
+  return object
 }
 
 
@@ -322,7 +331,15 @@ function objectBuilder(count) {
 
 function secretCipher(sentence, cipher){
   // your code here...
-
+	const desCiphered = []
+  for(let c of sentence){
+		if(c in cipher){
+      desCiphered.push(cipher[c])
+    }else{
+      desCiphered.push(c)
+    }
+  }
+  return desCiphered.join("");
 }
 
 
