@@ -357,7 +357,18 @@ function secretCipher(sentence, cipher){
 
 function passingStudents(students) {
   // your code here...
-
+  const passedStudents = []
+	for(let student of students){
+    let average = 0
+    for(let grade of student.grades){
+      average+= grade.score
+    }
+    if(average/student.grades.length >= 70){
+      passedStudents.push(student.name)
+    }
+  }
+  
+  return passedStudents
 }
 
 
