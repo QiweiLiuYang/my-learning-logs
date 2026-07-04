@@ -207,7 +207,7 @@ function prioritize(array, callback) {
 
 // /*** Uncomment these to check your work! ***/
  const startsWithS = function(str) { return str[0] === 's' || str[0] === 'S'; };
- console.log(prioritize(['curb', 'rickandmorty', 'seinfeld', 'sunny', 'friends'], startsWithS)); // should log:
+// console.log(prioritize(['curb', 'rickandmorty', 'seinfeld', 'sunny', 'friends'], startsWithS)); // should log:
 //['seinfeld', 'sunny', 'curb', 'rickandmorty', 'friends']
 
 
@@ -227,15 +227,23 @@ function countBy(array, callback) {
 }
 
 // /*** Uncomment these to check your work! ***/
-console.log(countBy([1, 2, 3, 4, 5], function(num) {
-	if (num % 2 === 0) return 'even';
- else return 'odd';
-})); // should log: { odd: 3, even: 2 }
+//console.log(countBy([1, 2, 3, 4, 5], function(num) {
+//	if (num % 2 === 0) return 'even';
+// else return 'odd';
+//})); // should log: { odd: 3, even: 2 }
 
 
 // Challenge 15
 function groupBy(array, callback) {
-
+	const obj = {}
+  
+  for(let e of array){
+    const key = callback(e)
+    obj[key] = obj[key] || []
+    obj[key].push(e)
+  }
+  
+  return obj
 }
 
 // /*** Uncomment these to check your work! ***/
@@ -246,7 +254,16 @@ function groupBy(array, callback) {
 
 // Challenge 16
 function goodKeys(obj, callback) {
-
+	//const trues = []
+  
+  //for(let [k, v] of Object.entries(obj)){
+  //  const result = callback(v)
+  //  if(result) trues.push(k)
+  //}
+  
+  //return trues
+  
+  return Object.keys(obj).filter(e => callback(obj[e]))
 }
 
 // /*** Uncomment these to check your work! ***/
@@ -257,7 +274,10 @@ function goodKeys(obj, callback) {
 
 // Challenge 17
 function commutative(func1, func2, value) {
-
+	//const result1 = func1(func2(value))
+  //const result2 = func2(func1(value))
+  
+  return func1(func2(value)) === func2(func1(value))
 }
 
 // /*** Uncomment these to check your work! ***/
@@ -271,7 +291,13 @@ function commutative(func1, func2, value) {
 
 // Challenge 18
 function objFilter(obj, callback) {
+	//const newObj = {}
+  
+  //Object.entries(obj).forEach(([k, v]) => callback(Number(k)) === v ? newObj[k] = v : null)
+  
+  //return newObj
 
+  return Object.fromEntries(Object.entries(obj).filter(([k, v]) => callback(Number(k)) === v))
 }
 
 // /*** Uncomment these to check your work! ***/
@@ -285,17 +311,22 @@ function objFilter(obj, callback) {
 
 // Challenge 19
 function rating(arrOfFuncs, value) {
+	//let rate = 0
+  //arrOfFuncs.forEach(e => rate += Number(e(value)))
+  
+  //return (rate * 100) / arrOfFuncs.length
 
+	return (reduce(arrOfFuncs, (acc, e) => {return acc + +e(value)}, 0) * 100) / arrOfFuncs.length
 }
 
-// /*** Uncomment these to check your work! ***/
-// const isEven = n => n % 2 === 0;
-// const greaterThanFour = n => n > 4;
-// const isSquare = n => Math.sqrt(n) % 1 === 0;
-// const hasSix = n => n.toString().includes('6');
-// const checks = [isEven, greaterThanFour, isSquare, hasSix];
-// console.log(rating(checks, 64)); // should log: 100
-// console.log(rating(checks, 66)); // should log: 75
+// *** Uncomment these to check your work! ***/
+ const isEven = n => n % 2 === 0;
+ const greaterThanFour = n => n > 4;
+ const isSquare = n => Math.sqrt(n) % 1 === 0;
+ const hasSix = n => n.toString().includes('6');
+ const checks = [isEven, greaterThanFour, isSquare, hasSix];
+ console.log(rating(checks, 64)); // should log: 100
+ console.log(rating(checks, 66)); // should log: 75
 
 
 // Challenge 20
