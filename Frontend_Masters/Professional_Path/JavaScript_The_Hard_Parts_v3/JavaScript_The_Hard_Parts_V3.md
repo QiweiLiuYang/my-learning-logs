@@ -266,7 +266,7 @@ Las promesas son un tipo de objeto especial que es un **placeholder** del valor 
 ### Promises and the Fetch API
 La función **fetch(uri)** sirve para hacer un **GET** (obtener datos) de un recurso en la red, el **fetch** usa una herramienta del navegador (**Network**). Le podemos pasar un segundo argumento con un objeto de configuración para hacer un **POST**. Ambos usan el protocolo **HTTP**.
 
-El objeto **Promise** tiene campos ocultos, uno de ellos es **[[PromiseResult]]** que contiene el resultado de la petición (un objeto **Response**), hasta que no se complete, es **undefined**. Tiene otro campo oculto que es **[[FulfillReaction]]** que contiene una callback a ejecutar una vez finalice su ejecución. Podemos hacer usar **Promise.then(Callback)** para registrar la función callback a ejecutar.
+El objeto **Promise** tiene campos ocultos, uno de ellos es **[[PromiseResult]]** que contiene el resultado de la petición (un objeto **Response**), hasta que no se complete, es **undefined**. Tiene otro campo oculto que es **[[FulfillReaction]]** que contiene una callback a ejecutar una vez finalice su ejecución. Podemos hacer **Promise.then(Callback)** para registrar la función callback a ejecutar.
 
 ### setTimeout & fetch Execution
 Para el hilo de ejecución del siguiente bloque de código:
