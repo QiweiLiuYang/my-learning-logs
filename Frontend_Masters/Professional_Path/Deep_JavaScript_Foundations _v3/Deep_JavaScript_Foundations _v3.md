@@ -85,3 +85,118 @@ sign(0) // 1
 La forma segura de saber si un valor es un **-0** es con **Object.is(valor, -0)**. De otra manera, tanto **-0 === 0** como **-0 === 0** da **true**.
 
 El **-0** puede ser útil para indicar tendencia o dirección.
+
+### Fundamental Objects
+aka: Buil-In Objects or Native Functions
+No deberíamos usarlos pero si entenderlos.
+Estos son los que se usan con **new**:
+- Object()
+- Array()
+- Function()
+- Date()
+- RegExp()
+- Error()
+
+Estos no hace falta usar **new**. Son frecuentemente usados para hacer **coercion**:
+- String()
+- Number()
+- Boolean()
+  
+## Coercion
+### Abstract Operations
+Son las operaciones internas que usa el motor de JavaScript para ejecutar tareas como la conversión de tipo. Estos son:
+- ToPrimitive(hint): Hint es el tipo de dato que queremos. Si hint es "number", intentará hacer primero **valueOf()** y si no puede, hará **toString()**. Ocurre lo contrario con hint = "string". Se detiene si obtiene un valor primitivo o da error.
+- ToNumber()
+- ToString()
+- ToBoolean()
+- ToObject()
+- RequireObjectCoercible()
+
+### toString
+**ToString** coge cualquier valor y devuelve su representación como **string**.
+
+\* Si se aplica *toString** a **-0** devuelve **0**.
+
+Si hacemos un **ToString(Objecto)**, este llamará a **ToPrimitive("string")**, es decir, llamará a **toString()** o **valueOf()**.
+
+Si aplicamos un **ToString** a un objeto array, este devuelve un string con quitando los corchetes **[]**, si hubiera valores **null** o **undefined** en el array, también los quita.
+```javascript
+[] => ""
+[1,2,3] => "1,2,3"
+[null, undefined] => ","
+[[[],[]],[]] => ",,,"
+[,,,,] => ",,,"
+```
+
+Si hacemos **ToString** a un objeto, quita los **{}** y deja **[object Object]**.
+```javascript
+{} => "[object Object]"
+{a:2} => "[object Object]"
+{toString(){return "X"}} => "X"
+```
+
+### toNumber
+El **toNumber** coercion transforma los siguientes string a sus valores númericos:
+```javascript
+"" -> 0
+"0" -> 0
+"-0" -> 0
+"   009   " -> 9
+"3.14159" -> 3.14159
+"0." -> 0
+".0" -> 0
+"." -> NaN
+"0xaf" -> 175
+
+false -> 0
+true -> 1
+null -> 0
+undefined -> NaN
+
+[""] -> 0
+["0"] -> 0
+["-0"] -> -0
+[null] -> 0
+[undefined] -> 0
+[1, 2, 3] -> NaN
+[[[[]]]] -> 0
+
+{..} -> NaN
+{valueOf(){return3;}} -> 3
+```
+
+### toBoolean
+Cuando necesitamos un **boolean** pero no tenemos uno en su lugar, fuerza a transformar el valor a un valor **Falsy** o **Truthy**:
+```javascript
+- Falsy: "", 0, -0, null, NaN, false, undefined
+- Truthy: El resto de valores
+```
+
+### Cases of Coercion
+El **Coercion** es cuando obliga a un valor a transformarse a otro aplicando un **toString, toNumber, toBoolean**:
+```javascript
+- Template literals (``): Invoca el **toString**.
+- +: Revisa si alguno de los dos lados (operando) es un **string**, si lo es, aplica el **toString** al valor que no sea un **string**.
+- [...].join(""): También invoca a **toString**.
+- .toString(): Invoca explícitamente **toString**.
+- String(valor): Invoca explícitamente **toString**.
+
+- +: Usado como un operador unario, como prefijo de un valor, invoca a **toNumber**.
+- Number(): Invoca explícitamente **toNumber**
+- -: Si se usa el operador "-", si algun operando no es numérico, aplica **toNumber**.
+
+- En cualquier caso que necesite un valor **Falsy** o **Truthy** (**Booleanos**). Por ejemplo las condiciones en los **if**, **while**, **for**, comparaciones con **==**, etc.
+- !!: Aplica el **toBoolean**.
+- Operadores (>, <, <=, =>, ==): También aplican **toBoolean**.
+- Boolean(valor): Aplica explícitamente **toBoolean**.
+```
+
+### Boxing
+Cuando accedemos a una propiedad de un tipo primivido (por ejemplo **.length** en los **strings**). Eso se le llama **Boxing** y es una forma implícita de **coercion**. Eso es porque el JavaScript transforma el dato en su contrapartida en forma de **objeto** para que puedas usarlo como un **objeto** de verdad. De otra manera, arrojaría un error porque estás queriendo usar un dato primitivo como objeto.
+
+### Corner Cases of Coercion
+No solo un **string** vacío da 0 si se le hace **toNumber**, si no también cualquier forma de espacio blanco como **\t** o **\n**.
+
+Con el caso de 1 < 2 < 3 da **true** porque primero evalua 1 < 2 y da **true**, que después se le aplica **toNumber** y se convierte en 1 y 1 < 3 por lo que da true. Si hacemos 3 > 2 > 1 da false por ejemplo.
+
+También si aplicamos **toBoolean** al string "false", devolverá **true**.
